@@ -8,11 +8,14 @@ router.route("/")
     .post(products.create)
     .delete(products.deleteAll);
 
+router.route("/filter")
+        .post(products.findByFilter)
 
 router.route("/:id")
     .get(products.findById)
     .put(products.update)
     .delete(products.delete);
+    
 
 module.exports = router;
     

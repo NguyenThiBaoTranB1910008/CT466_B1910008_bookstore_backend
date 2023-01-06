@@ -46,8 +46,9 @@ ProductModel.getAll = (title, result) => {
 ProductModel.findById = (id, result) => {
     sql.query(`SELECT * FROM products WHERE id = ${id}`, (err, res) => {
       if (err) {
-        console.log("error: ", err);
-        result(err, null);
+        // if(res.length==0)
+          console.log("error: ", err);
+          result(err, null);
         return;
       }
   
@@ -59,6 +60,39 @@ ProductModel.findById = (id, result) => {
       // not found Tutorial with the id
       result({ kind: "not_found" }, null);
     });
+};
+
+ProductModel.findByFilter = (req, result) => {
+  let order = req.body.order ? `ORDER BY price ${req.body.order}` : "";
+  let category = req.body.category ? `category = '${req.body.category}' AND` : "";
+  let search = req.body.search ? req.body.search : "";
+  let min = req.body.min ? req.body.min : 0;
+  let max = req.body.max ? req.body.max : 1000000;
+  let brands= req.body.brand ? req.body.brand : []
+  let brand= req.body.brand && req.body.brand.length!=0 ? `AND `: ""
+  brands.map((element,i) => {
+    brand += `brand = "${element}" `
+    if(i!=brands.length-1)
+      brand += " OR "
+  })
+
+  sql.query(`SELECT * FROM products WHERE ${category} price >= ${min}
+             AND price <= ${max} AND title LIKE '%${search}%' ${order} ${brand}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length >= 0) {
+      result(null, res);
+      return;
+    }
+
+
+    // not found Tutorial with the id
+    result({ kind: "not_found" }, null);
+  });
 };
 
 ProductModel.updateById = (id, product, result) => {

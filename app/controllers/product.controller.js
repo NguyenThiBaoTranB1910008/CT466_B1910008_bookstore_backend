@@ -57,6 +57,17 @@ exports.findById = (req, res) => {
   });
 };
 
+exports.findByFilter= (req, res) => {
+  ProductModel.findByFilter(req, (err, data) => {
+    if (err)
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving products."
+        });
+    else res.send(data);
+  });
+};
+
 exports.update = (req, res) => {
     // Validate Request
     if (!req.body) {
