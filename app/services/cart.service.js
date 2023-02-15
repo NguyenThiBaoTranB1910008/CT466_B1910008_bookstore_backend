@@ -1,6 +1,7 @@
 const sql = require("../utils/mysql.util.js");
 
 const CartModel = function(cartItem) {
+    this.user = cartItem.user,
     this.idbook = cartItem.idbook,
     this.title = cartItem.title;
     this.imgUrl = cartItem.imgUrl;
@@ -38,8 +39,8 @@ CartModel.getAll = (title, result) => {
     });
   };
 
-CartModel.findById = (id, result) => {
-    sql.query(`SELECT * FROM cart WHERE idbook = ${id}`, (err, res) => {
+CartModel.findById = (id,user, result) => {
+    sql.query(`SELECT * FROM cart WHERE idbook = ${id} AND user= '${user}'`, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -54,6 +55,20 @@ CartModel.findById = (id, result) => {
       // not found Tutorial with the id
       result({ kind: "not_found" }, null);
     });
+};
+
+CartModel.findByName = (name, result) => {
+  let query = `SELECT * FROM cart WHERE user = '${name}'`;
+    sql.query(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      // console.log("tutorials: ", res);
+      result(null, res);
+    })
 };
 
 CartModel.updateById = (id, cart, result) => {
@@ -81,7 +96,6 @@ CartModel.updateById = (id, cart, result) => {
 
 CartModel.remove = (id, result) => {
     sql.query("DELETE FROM cart WHERE id = ?", id, (err, res) => {
-      console.log(id)
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -111,5 +125,7 @@ CartModel.removeAll = result => {
       result(null, res);
     });
 };
+
+
 
 module.exports = CartModel;

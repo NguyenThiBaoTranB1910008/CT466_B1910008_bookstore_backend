@@ -11,11 +11,17 @@ router.route("/")
 router.route("/filter")
         .post(products.findByFilter)
 
+router.route("/new")
+        .get(products.getLimit)
+
+router.route("/upload")
+        .post(products.uploadFile)
+            
 router.route("/:id")
     .get(products.findById)
     .put(products.update)
     .delete(products.delete);
-    
+
 
 module.exports = router;
     

@@ -8,6 +8,7 @@ exports.create = (req, res) => {
     }
   
     const cartModel = new CartModel({
+      user: req.body.user,
       idbook: req.body.idbook,
       title : req.body.title,
       imgUrl : req.body.imgUrl,
@@ -40,9 +41,17 @@ exports.findAll = async (req , res, next) =>{
 };
 
 exports.findById = (req, res) => {
-  CartModel.findById(req.params.id, (err, data) => {
+  CartModel.findById(req.params.id,req.body.user, (err, data) => {
     if (err)
         res.send(false);
+    else res.send(data);
+  });
+};
+
+exports.findByName = (req, res) => {
+  CartModel.findByName(req.params.name, (err, data) => {
+    if (err)
+        res.send("error");
     else res.send(data);
   });
 };
@@ -93,7 +102,7 @@ exports.delete = (req, res) => {
   
   // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    ProductModel.removeAll((err, data) => {
+    CartModel.removeAll((err, data) => {
       if (err)
         res.status(500).send({
           message:

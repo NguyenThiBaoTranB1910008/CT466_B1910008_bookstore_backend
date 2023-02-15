@@ -95,6 +95,21 @@ ProductModel.findByFilter = (req, result) => {
   });
 };
 
+ProductModel.getLimit = (id, result) => {
+  sql.query(`SELECT * FROM products ORDER BY id DESC LIMIT 5 `, (err, res) => {
+    if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+  });
+};
+
 ProductModel.updateById = (id, product, result) => {
     sql.query(
       "UPDATE products SET title = ?, author = ?, imageUrl = ?, price = ?, category = ?, page = ?, brand  = ?, language = ?, releaseDate = ?, description = ? WHERE id = ?",

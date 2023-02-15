@@ -10,9 +10,12 @@ router.route("/")
 
 
 router.route("/:id")
-    .get(cart.findById)
+    .post(cart.findById)
     .put(cart.update)
     .delete(cart.delete);
+
+router.route("/get/:name")
+    .get(cart.findByName)
 
 module.exports = router;
     
