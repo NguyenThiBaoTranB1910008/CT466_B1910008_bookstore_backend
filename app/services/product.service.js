@@ -76,14 +76,15 @@ ProductModel.findByFilter = (req, result) => {
       brand += " OR "
   })
 
+  
   sql.query(`SELECT * FROM products WHERE ${category} price >= ${min}
-             AND price <= ${max} AND title LIKE '%${search}%' ${order} ${brand}`, (err, res) => {
+  AND price <= ${max} AND title LIKE '%${search}%' ${order} ${brand}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-
+    
     if (res.length >= 0) {
       result(null, res);
       return;
