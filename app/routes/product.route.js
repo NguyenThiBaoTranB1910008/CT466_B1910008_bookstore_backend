@@ -20,7 +20,8 @@ router.route("/upload")
 router.route("/:id")
     .get(products.findById)
     .put(products.update)
-    .delete(products.delete);
+    .delete(products.delete)
+    .post(products.order)
 
 
 module.exports = router;

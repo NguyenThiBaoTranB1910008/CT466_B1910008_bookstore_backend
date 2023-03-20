@@ -6,7 +6,7 @@ const CartModel = function(cartItem) {
     this.title = cartItem.title;
     this.imgUrl = cartItem.imgUrl;
     this.price = cartItem.price;
-    this.quality = cartItem.quality;
+    this.quantity = cartItem.quantity;
   };
   
 CartModel.create = (newCart, result) => {
@@ -73,8 +73,8 @@ CartModel.findByName = (name, result) => {
 
 CartModel.updateById = (id, cart, result) => {
   sql.query(
-    "UPDATE cart SET quality = ? WHERE id = ?",
-    [cart.quality, id],
+    "UPDATE cart SET quantity = ? WHERE id = ?",
+    [cart.quantity, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

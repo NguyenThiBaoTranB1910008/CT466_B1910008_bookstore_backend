@@ -7,6 +7,7 @@ const ProductModel = function(products) {
     this.price = products.price;
     this.category = products.category;
     this.page= products.page;
+    this.quantity= products.quantity;
     this.brand=  products.brand;
     this.language = products.language;
     this.releaseDate= products.releaseDate;
@@ -78,7 +79,7 @@ ProductModel.findByFilter = (req, result) => {
 
   
   sql.query(`SELECT * FROM products WHERE ${category} price >= ${min}
-  AND price <= ${max} AND title LIKE '%${search}%' ${order} ${brand}`, (err, res) => {
+  AND price <= ${max} AND title LIKE '%${search}%' ${brand} ${order}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -113,10 +114,7 @@ ProductModel.getLimit = (id, result) => {
 
 ProductModel.updateById = (id, product, result) => {
     sql.query(
-      "UPDATE products SET title = ?, author = ?, imageUrl = ?, price = ?, category = ?, page = ?, brand  = ?, language = ?, releaseDate = ?, description = ? WHERE id = ?",
-      [product.title, product.author, product.imageUrl, product.price,
-         product.category, product.page, product.brand, product.language, product.releaseDate, product.description, id],
-      (err, res) => {
+      "UPDATE products SET ? WHERE id = ?",[product,id],(err, res) => {
         if (err) {
           console.log("error: ", err);
           result(null, err);
@@ -128,8 +126,7 @@ ProductModel.updateById = (id, product, result) => {
           result({ kind: "not_found" }, null);
           return;
         }
-  
-        // console.log("updated tutorial: ", { id: id, ...tutorial });
+
         result(null, { id: id, ...product });
       }
     );
@@ -166,6 +163,29 @@ ProductModel.removeAll = result => {
       result(null, res);
     });
 };
+
+ProductModel.order = (id, quantity, result) => {
+  sql.query(
+    "UPDATE products SET quantity= quantity-? WHERE id = ?",[quantity,id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Tutorial with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      // console.log("updated tutorial: ", { id: id, ...tutorial });
+      result(null, true);
+    }
+  );
+};
+
 module.exports = ProductModel;
 
 // /{

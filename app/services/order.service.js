@@ -29,7 +29,7 @@ OrderModel.create = (newOrder, result) => {
 
 
   newOrder.cart.forEach(element => {
-    sql.query("INSERT INTO orderdetail SET idOrder = (SELECT MAX(id) FROM orders), ?",element, (err, res) => {
+    sql.query("INSERT INTO orderdetail SET idOrder = (SELECT MAX(id) FROM orders), idBook= ?, title= ?, imgUrl=?, price=?, quantity = ?",[element.idbook, element.title, element.imgUrl, element.price, element.quantity], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

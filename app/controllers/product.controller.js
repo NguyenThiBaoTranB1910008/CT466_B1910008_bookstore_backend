@@ -16,6 +16,7 @@ exports.create = (req, res) => {
       price : req.body.price,
       category : req.body.category,
       page: req.body.page,
+      quantity: req.body.quantity,
       brand : req.body.brand,
       language : req.body.language,
       releaseDate: req.body.releaseDate,
@@ -79,6 +80,17 @@ exports.getLimit= (req, res) => {
   });
 };
 
+exports.order= (req, res) => {
+  ProductModel.order(req.body.id, req.body.quantity, (err, data) => {
+    if (err)
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while order products."
+        });
+    else res.send(data);
+  });
+};
+
 exports.update = (req, res) => {
     // Validate Request
     if (!req.body) {
@@ -87,7 +99,7 @@ exports.update = (req, res) => {
       });
     }
   ProductModel.updateById(
-    req.params.id,
+      req.params.id,
       new ProductModel(req.body),
       (err, data) => {
         if (err) {

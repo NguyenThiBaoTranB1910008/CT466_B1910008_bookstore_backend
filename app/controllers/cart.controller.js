@@ -13,8 +13,9 @@ exports.create = (req, res) => {
       title : req.body.title,
       imgUrl : req.body.imgUrl,
       price : req.body.price,
-      quality: req.body.quality,
+      quantity: req.body.quantity,
     });
+
   
     // Save Tutorial in the database
 CartModel.create(cartModel, (err, data) => {
@@ -76,7 +77,7 @@ exports.update = (req, res) => {
             });
           } else {
             res.status(500).send({
-              message: "Error updating quality of cart item with id " + req.params.id
+              message: "Error updating quantity of cart item with id " + req.params.id
             });
           }
         } else res.send(data);
