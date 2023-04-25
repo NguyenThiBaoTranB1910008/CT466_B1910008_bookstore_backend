@@ -7,13 +7,13 @@ exports.create = (req, res) => {
       });
     }
   
-    const announceModel = new AnnounceModel({
+    const announceModel = {
       date: req.body.date,
       user: req.body.user,
       idOrder: req.body.idOrder,
       content : req.body.content,
       status : false,
-    });
+    };
   
     // Save Tutorial in the database
 AnnounceModel.create(announceModel, (err, data) => {

@@ -1,15 +1,13 @@
-// const ApiError = require("../api-error");
 const ProductModel = require("../services/product.service");
-// const MongoDB = require("../utils/mysql.util");
 
 exports.create = (req, res) => {
+
     if (!req.body) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
     }
-  
-    const productModel = new ProductModel({
+    const productModel = {
       title : req.body.title,
       author : req.body.author,
       imageUrl : req.body.imageUrl,
@@ -21,7 +19,7 @@ exports.create = (req, res) => {
       language : req.body.language,
       releaseDate: req.body.releaseDate,
       description : req.body.description
-    });
+    };
   
     // Save Tutorial in the database
     ProductModel.create(productModel, (err, data) => {
@@ -35,9 +33,8 @@ exports.create = (req, res) => {
   };
 
 exports.findAll = async (req , res, next) =>{
-    const title = req.query.title;
-
-    ProductModel.getAll(title, (err, data) => {
+    ProductModel.getAll((err, data) => {
+      console.log(data)
         if (err)
             res.status(500).send({
                 message:
@@ -70,7 +67,7 @@ exports.findByFilter= (req, res) => {
 };
 
 exports.getLimit= (req, res) => {
-  ProductModel.getLimit(req, (err, data) => {
+  ProductModel.getLimit((err, data) => {
     if (err)
         res.status(500).send({
             message:
@@ -100,7 +97,7 @@ exports.update = (req, res) => {
     }
   ProductModel.updateById(
       req.params.id,
-      new ProductModel(req.body),
+      req.body,
       (err, data) => {
         if (err) {
             // console.log("error");
@@ -109,6 +106,7 @@ exports.update = (req, res) => {
               message: `Not found product with id ${req.params.id}.`
             });
           } else {
+            console.log("error")
             res.status(500).send({
               message: "Error updating product with id " + req.params.id
             });
@@ -122,6 +120,8 @@ exports.uploadFile = (req, res) => {
   if (!req.files) {
     return res.status(500).send({ msg: "file is not found" })
   }
+
+
   // accessing the file
   const myFile = req.files.photo;
   myFile.mv(`${__dirname}/../../public/images/${myFile.name}`, function (err) {

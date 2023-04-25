@@ -1,65 +1,59 @@
-const sql = require("../utils/mysql.util.js");
+const db = require("../models/index.js")
+const { Op } = require("sequelize");
 
-const AnnounceModel = function(announce) {
-    this.date = announce.date,
-    this.user = announce.user,
-    this.idOrder = announce.idOrder,
-    this.content = announce.content;
-    this.status = announce.status;
-  };
   
-AnnounceModel.create = (announment, result) => {
-    sql.query("INSERT INTO announment SET ?", announment, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-      result(null, { ...announment });
-    });
-};
-  
-AnnounceModel.findByName = (name, result) => {
-    // console.log(name)
-  let query = `SELECT * FROM announment WHERE user = '${name}'`;
-    sql.query(query, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-  
-      // console.log("tutorials: ", res);
-      result(null, res);
-    })
-};
-
-AnnounceModel.seen = (name, result) => {
-  // console.log(name)
-let query = `UPDATE announment SET status = 1 WHERE user = '${name}'`;
-  sql.query(query, (err, res) => {
-    if (err) {
+exports.create = (announment, result) => {
+  db.announce.create(
+    announment
+  ).then(function(announce) {
+    result(null, announce);
+    }).catch((err)=>{
       console.log("error: ", err);
       result(null, err);
       return;
-    }
-
-    // console.log("tutorials: ", res);
-    result(null, res);
   })
 };
-
-AnnounceModel.newNotify = (name, result) => {
-  let query = `SELECT * FROM announment WHERE user = '${name}' and status= 0`;
-    sql.query(query, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-      result(null, res);
-    })
+  
+exports.findByName = (name, result) => {
+  db.announce.findAll({
+    where: { 
+      user: name
+    },
+  }).then(function(announce) {
+    result(null, announce);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
 };
 
+exports.seen = (name, result) => {
+  db.announce.update( {status: 1}, {
+    where: {
+      user: name
+    }
+  })
+  .then(function(announce) {
+    result(null, announce);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
 
-module.exports = AnnounceModel;
+exports.newNotify = (name, result) => {
+  db.announce.findAll({
+    where: { 
+    user: name,
+    status: 0,
+    },
+  }).then(function(announce) {
+    result(null, announce);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};

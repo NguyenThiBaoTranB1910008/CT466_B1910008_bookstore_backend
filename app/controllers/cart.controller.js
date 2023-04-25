@@ -7,14 +7,14 @@ exports.create = (req, res) => {
       });
     }
   
-    const cartModel = new CartModel({
+    const cartModel ={
       user: req.body.user,
       idbook: req.body.idbook,
       title : req.body.title,
       imgUrl : req.body.imgUrl,
       price : req.body.price,
       quantity: req.body.quantity,
-    });
+    };
 
   
     // Save Tutorial in the database
@@ -29,9 +29,8 @@ CartModel.create(cartModel, (err, data) => {
   };
 
 exports.findAll = async (req , res, next) =>{
-    const title = req.query.title;
 
-    CartModel.getAll(title, (err, data) => {
+    CartModel.getAll( (err, data) => {
         if (err)
             res.status(500).send({
                 message:
@@ -67,7 +66,7 @@ exports.update = (req, res) => {
   
   CartModel.updateById(
     req.params.id,
-      new CartModel(req.body),
+      req.body,
       (err, data) => {
         if (err) {
             // console.log("error");
@@ -103,7 +102,7 @@ exports.delete = (req, res) => {
   
   // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    CartModel.removeAll((err, data) => {
+    CartModel.removeAll(req.params.name, (err, data) => {
       if (err)
         res.status(500).send({
           message:

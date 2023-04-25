@@ -7,7 +7,7 @@ exports.create = (req, res) => {
       });
     }
   
-    const orderModel = new OrderModel({
+    const orderModel = {
       accname: req.body.accname,
       phone: req.body.phone,
       lastname : req.body.lastname,
@@ -19,7 +19,7 @@ exports.create = (req, res) => {
       dayOrder: req.body.dayOrder,
       total: req.body.total,
       cart: req.body.cart
-    });
+    };
   
     // Save Tutorial in the database
     OrderModel.create(orderModel, (err, data) => {

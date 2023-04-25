@@ -6,8 +6,9 @@ const router = express.Router();
 router.route("/")
     .get(cart.findAll)
     .post(cart.create)
-    .delete(cart.deleteAll);
 
+router.route("/order/:name")
+    .delete(cart.deleteAll);
 
 router.route("/:id")
     .post(cart.findById)

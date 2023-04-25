@@ -7,11 +7,11 @@ exports.create = (req, res) => {
       });
     }
   
-    const userModel = new UserModel({
+    const userModel = {
       accname: req.body.accname,
       fullname : req.body.fullname,
       pass : req.body.pass,
-    });
+    };
   
     // Save Tutorial in the database
 UserModel.create(userModel, (err, data) => {
@@ -25,7 +25,6 @@ UserModel.create(userModel, (err, data) => {
   };
 
 exports.findAll = async (req , res, next) =>{
-
     UserModel.getAll((err, data) => {
         if (err)
             res.status(500).send({
@@ -124,7 +123,7 @@ exports.update = (req, res) => {
   }
 UserModel.update(
   req.params.id,
-    new UserModel(req.body),
+    req.body,
     (err, data) => {
       if (err) {
           // console.log("error");
