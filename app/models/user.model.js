@@ -3,11 +3,14 @@ const {  Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class UserModel extends Model {
-        static associate(models) {   
+        static associate(models) {
+          UserModel.belongsTo(models.comment, {
+            foreignKey: "idUser", // Column name of associated table
+        });
         }
       }
       UserModel.init({
-        id: {
+        idUser: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,

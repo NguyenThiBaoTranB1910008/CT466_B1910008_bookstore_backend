@@ -18,7 +18,12 @@ exports.create = (req, res) => {
       brand : req.body.brand,
       language : req.body.language,
       releaseDate: req.body.releaseDate,
-      description : req.body.description
+      size: req.body.size,
+      type: req.body.type,
+      description : req.body.description,
+      highlight1 : req.body.highlight1,
+      highlight2 : req.body.highlight2,
+      highlight3 : req.body.highlight3
     };
   
     // Save Tutorial in the database
@@ -34,7 +39,6 @@ exports.create = (req, res) => {
 
 exports.findAll = async (req , res, next) =>{
     ProductModel.getAll((err, data) => {
-      console.log(data)
         if (err)
             res.status(500).send({
                 message:
@@ -130,9 +134,9 @@ exports.uploadFile = (req, res) => {
       return res.status(500).send({ msg: "Error occured" });
     }
     // returing the response with file path and name
-  })
+  }) 
   var fs = require('fs');
-  var filePath = `${__dirname}/../../public/images/${req.body.oldImage}`; 
+  var filePath = `${__dirname}/../../public/images/${req.body.oldImage}`;
   // console.log(filePath)
   if(req.body.oldImage != "")
     fs.unlinkSync(filePath);

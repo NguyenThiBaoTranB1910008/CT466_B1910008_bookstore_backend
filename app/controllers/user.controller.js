@@ -98,13 +98,11 @@ exports.updateAdmin = (req, res) => {
     req.body.id, req.body.isadmin,
     (err, data) => {
       if (err) {
-        console.log("error");
         if (err.kind === "not_found") {
           res.status(404).send({
             message: `Not found user item with id ${req.params.id}.`
           });
         } else {
-          console.log("500")
           res.status(500).send({
             message: "Error updating quality of cart item with id " + req.params.id
           });

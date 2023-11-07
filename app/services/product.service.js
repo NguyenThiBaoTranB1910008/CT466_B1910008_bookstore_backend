@@ -56,6 +56,7 @@ exports.findByFilter = (req, result) => {
           ['price', req.body.order]
         ],
       }).then(function(product) {
+        //product = product.slice((req.body.pagination.page-1)*req.body.pagination.limit, req.body.pagination.page*req.body.pagination.limit) 
         result(null, product);
         }).catch((err)=>{
           console.log("error: ", err);
@@ -74,6 +75,7 @@ exports.findByFilter = (req, result) => {
           brand: { [Op.in]: brands},
         }
       }).then(function(product) {
+        //product = product.slice(req.body.pagination.page-1, req.body.pagination.page*req.body.pagination.limit) 
         result(null, product);
         }).catch((err)=>{
           console.log("error: ", err);

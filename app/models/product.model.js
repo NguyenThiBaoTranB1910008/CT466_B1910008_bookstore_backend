@@ -23,7 +23,12 @@ module.exports = (sequelize, DataTypes) => {
         brand : DataTypes.STRING,
         language : DataTypes.STRING,
         releaseDate : DataTypes.STRING,
-        description: DataTypes.STRING
+        size : DataTypes.STRING,
+        type : DataTypes.STRING,
+        description: DataTypes.STRING,
+        highlight1 : DataTypes.STRING,
+        highlight2 : DataTypes.STRING,
+        highlight3 : DataTypes.STRING,
         }, {
         sequelize,
         updatedAt: false,

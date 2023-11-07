@@ -24,9 +24,11 @@ db.cart = require("./cart.model")(sequelize, Sequelize);
 db.order = require("./order.model")(sequelize, Sequelize);
 db.orderdetail = require("./orderdetail.model")(sequelize, Sequelize);
 db.announce = require("./announce.model")(sequelize, Sequelize);
+db.comment = require("./comment.model")(sequelize, Sequelize);
 // // db.employee.hasOne(db.employeeSetting);
-// db.employeeSetting.belongsTo(db.employee, {
-//   foreignKey: "employeeId",
-// });
-
+db.comment.belongsTo(db.user, {
+  foreignKey: "idUser",
+  as: "user_comment" 
+});
+db.user.hasMany(db.comment, {as : 'user_comment', foreignKey : 'idUser'});
 module.exports = db;
