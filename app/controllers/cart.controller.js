@@ -8,7 +8,7 @@ exports.create = (req, res) => {
     }
   
     const cartModel ={
-      user: req.body.user,
+      idUser: req.body.idUser,
       idbook: req.body.idbook,
       title : req.body.title,
       imgUrl : req.body.imgUrl,
@@ -49,7 +49,7 @@ exports.findById = (req, res) => {
 };
 
 exports.findByName = (req, res) => {
-  CartModel.findByName(req.params.name, (err, data) => {
+  CartModel.findByName(req.params.id, (err, data) => {
     if (err)
         res.send("error");
     else res.send(data);
@@ -102,7 +102,7 @@ exports.delete = (req, res) => {
   
   // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    CartModel.removeAll(req.params.name, (err, data) => {
+    CartModel.removeAll(req.params.id, (err, data) => {
       if (err)
         res.status(500).send({
           message:

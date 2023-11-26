@@ -7,7 +7,7 @@ router.route("/")
     .get(cart.findAll)
     .post(cart.create)
 
-router.route("/order/:name")
+router.route("/order/:id")
     .delete(cart.deleteAll);
 
 router.route("/:id")
@@ -15,7 +15,7 @@ router.route("/:id")
     .put(cart.update)
     .delete(cart.delete);
 
-router.route("/get/:name")
+router.route("/get/:id")
     .get(cart.findByName)
 
 module.exports = router;

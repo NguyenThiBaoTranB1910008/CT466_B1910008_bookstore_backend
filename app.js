@@ -7,6 +7,7 @@ const userRouter = require("./app/routes/user.route");
 const announceRouter = require("./app/routes/announce.route");
 const orderRouter = require("./app/routes/order.route")
 const commentRouter = require("./app/routes/comment.route")
+const addressRouter = require("./app/routes/address.route")
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,7 @@ app.use("/api/product", productsRouter);
 app.use("/api/announment", announceRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/comment", commentRouter);
+app.use("/api/address", addressRouter);
 
 // file upload api
 // console.log(__dirname + '/public/')

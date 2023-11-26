@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         fullname: DataTypes.STRING,
         accname : DataTypes.STRING,
         isadmin : { type: DataTypes.INTEGER, defaultValue: 0},
-        pass: DataTypes.STRING
+        pass: DataTypes.STRING,
+        phone: DataTypes.STRING
         }, {
         sequelize,
         updatedAt: false,

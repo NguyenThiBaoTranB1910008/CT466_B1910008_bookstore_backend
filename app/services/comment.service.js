@@ -1,7 +1,6 @@
 const db = require("../models/index.js")
 
 exports.create = (comment, result) => {
-  console.log(comment)
   db.comment.create(
     comment
   ).then(function(comment) {
@@ -15,7 +14,7 @@ exports.create = (comment, result) => {
 
 exports.getCommentByIdBook = (idbook, result) => {
   db.comment.findAll({
-    where: { idbook: idbook},
+    where: { idBook: idbook},
     include: [
       {
           association: "user_comment",

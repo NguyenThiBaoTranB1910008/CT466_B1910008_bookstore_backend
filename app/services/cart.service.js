@@ -27,7 +27,7 @@ exports.findById = (id,user, result) => {
   db.cart.findAll({
     where: { 
       idbook: id,
-      user: user
+      idUser: user
     },
   }).then(function(cart) {
     result(null, cart);
@@ -40,7 +40,7 @@ exports.findById = (id,user, result) => {
 
 exports.findByName = (name, result) => {
   db.cart.findAll({
-    where: { user: name },
+    where: { idUser: name },
   }).then(function(cart) {
     result(null, cart);
     }).catch((err)=>{
@@ -79,7 +79,7 @@ exports.remove = (id, result) => {
 
 exports.removeAll =(name,result) => {
   db.cart.destroy({
-    where: { user: name}
+    where: { idUser: name}
   }).then(function(cart) {
     result(null, cart);
     }).catch((err)=>{

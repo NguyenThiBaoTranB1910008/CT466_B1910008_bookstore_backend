@@ -16,6 +16,12 @@ router.route("/confirm")
 router.route("/detail/:id")
     .get(order.findOrderDetail)
 
+router.route("/getreview")
+    .post(order.reviewById)
+
+router.route("/review/:id")
+    .get(order.findById)
+
 router.route("/:accname")
     .get(order.findByAcc)
 

@@ -10,13 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         // });
         }}
       CommentModel.init({
-        idBook: {
+        id: {
             type: DataTypes.INTEGER,
-            autoIncrement: false,
+            autoIncrement: true,
             allowNull: false,
             primaryKey: true,
         },
-        idUser : DataTypes.STRING,
+        idBook: DataTypes.INTEGER,
+        idUser : DataTypes.INTEGER,
         ratting: DataTypes.INTEGER,
         comment: DataTypes.STRING,
         dateCmt: DataTypes.STRING,

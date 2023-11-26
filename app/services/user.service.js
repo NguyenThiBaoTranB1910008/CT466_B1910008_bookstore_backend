@@ -23,7 +23,24 @@ exports.getAll = (result) => {
   })
 };
 
-exports.findByAccName = (accname, result) => {
+exports.findById = (id, result) => {
+  db.user.findAll({
+    where: {
+      idUser: id,
+    },
+  }).then(function(user) {
+    if(user.length != 0)
+      result(null, user[0]);
+    else
+      result({ kind: "not_found" }, null);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
+
+exports.findByAccname = (accname, result) => {
   db.user.findAll({
     where: {
       accname: accname,

@@ -2,11 +2,11 @@
 const {  Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class OrderModel extends Model {
+    class AddressModel extends Model {
         static associate(models) {   
         }
       }
-      OrderModel.init({
+      AddressModel.init({
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -14,22 +14,18 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
         },
         idUser: DataTypes.INTEGER,
+        name : DataTypes.STRING,
         phone : DataTypes.STRING,
-        lastname: DataTypes.STRING,
-        firstname: DataTypes.STRING,
+        city : DataTypes.STRING,
+        district: DataTypes.STRING,
+        ward: DataTypes.STRING,
         address : DataTypes.STRING,
-        note : DataTypes.STRING,
-        dayOrder: DataTypes.STRING,
-        dayConfirm: DataTypes.STRING,
-        dayReceipt: DataTypes.STRING,
-        totalItems: DataTypes.INTEGER,
-        total: DataTypes.INTEGER,
-        status : DataTypes.STRING,
+        default_value: DataTypes.INTEGER
     }, {
         sequelize,
         updatedAt: false,
         createdAt: false,
-        modelName: 'orders',
+        modelName: 'address',
       });
-    return OrderModel;
+    return AddressModel;
   };

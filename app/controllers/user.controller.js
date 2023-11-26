@@ -11,6 +11,7 @@ exports.create = (req, res) => {
       accname: req.body.accname,
       fullname : req.body.fullname,
       pass : req.body.pass,
+      phone : req.body.phone,
     };
   
     // Save Tutorial in the database
@@ -35,8 +36,16 @@ exports.findAll = async (req , res, next) =>{
     });
 };
 
+exports.findById = (req, res) => {
+  UserModel.findById(req.params.id, (err, data) => {
+    if (err)
+        res.send(false);
+    else res.send(data);
+  });
+};
+
 exports.findByAccName = (req, res) => {
-  UserModel.findByAccName(req.params.accname, (err, data) => {
+  UserModel.findByAccname(req.params.accname, (err, data) => {
     if (err)
         res.send(false);
     else res.send(data);

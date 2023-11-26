@@ -14,7 +14,7 @@ router.route("/:id")
     .delete(user.delete)
     .post(user.updateAdmin)
     .put(user.update)
-
+    .get(user.findById)
 
 router.route("/check/:accname")
     .get(user.checkAccName)

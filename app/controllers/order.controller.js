@@ -6,17 +6,18 @@ exports.create = (req, res) => {
         message: "Content can not be empty!"
       });
     }
-  
+    
     const orderModel = {
-      accname: req.body.accname,
+      idUser: req.body.idUser,
       phone: req.body.phone,
       lastname : req.body.lastname,
       firstname : req.body.firstname,
       address : req.body.address,
-      city : req.body.city,
-      country : req.body.country,
       note: req.body.note,
       dayOrder: req.body.dayOrder,
+      dayConfirm: "",
+      dayReceipt: "",
+      totalItems: req.body.totalItems,
       total: req.body.total,
       cart: req.body.cart
     };
@@ -62,7 +63,7 @@ exports.findOrderDetail = (req, res) => {
 };
 
 exports.confirm = (req, res) => {
-  OrderModel.confirm(req.body.id, req.body.type , (err, data) => {
+  OrderModel.confirm(req , (err, data) => {
   if (err)
       res.send(false);
   else res.send(data);
@@ -79,6 +80,28 @@ exports.findOrderDetail = (req, res) => {
 
 exports.findByFilter= (req, res) => {
   OrderModel.findByFilter(req, (err, data) => {
+    if (err)
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving products."
+        });
+    else res.send(data);
+  });
+};
+
+exports.findById= (req, res) => {
+  OrderModel.findById(req.params.id, (err, data) => {
+    if (err)
+        res.status(500).send({
+            message:
+            err.message || "Some error occurred while retrieving products."
+        });
+    else res.send(data);
+  });
+};
+
+exports.reviewById= (req, res) => {
+  OrderModel.reviewById(req, (err, data) => {
     if (err)
         res.status(500).send({
             message:

@@ -4,13 +4,16 @@ const { Op } = require("sequelize");
 exports.create = (newOrder, result) => {
   db.order.create(
     {
-      accname: newOrder.accname,
+      idUser: newOrder.idUser,
       phone: newOrder.phone,
       lastname: newOrder.lastname, 
       firstname: newOrder.firstname,
       address: newOrder.address, 
       note: newOrder.note, 
       dayOrder: newOrder.dayOrder, 
+      dayConfirm: newOrder.dayConfirm,
+      dayReceipt: newOrder.dayReceipt,
+      totalItems: newOrder.totalItems,
       total: newOrder.total,
       status: 'wait',
     }
@@ -23,7 +26,8 @@ exports.create = (newOrder, result) => {
             title: element.title, 
             imgUrl: element.imgUrl, 
             price: element.price, 
-            quantity: element.quantity
+            quantity: element.quantity,
+            review: 0
           }
           ).then(function(orderdetail) {
             }).catch((err)=>{
@@ -42,7 +46,7 @@ exports.create = (newOrder, result) => {
 exports.getOrderByAcc = (accname, result) => {
   db.order.findAll({
     where: { 
-      accname: accname
+      idUser: accname
     },
   }).then(function(order) {
     result(null, order);
@@ -67,19 +71,34 @@ exports.getOrderDetail = (id, result) => {
   });
 };
 
-exports.confirm = (id, type, result) => {
-  db.order.update( {status: type}, {
-    where: {
-      id: id
-    }
-  })
-  .then(function(order) {
-    result(null, order);
-    }).catch((err)=>{
-      console.log("error: ", err);
-      result(null, err);
-      return;
-  });
+exports.confirm = (req, result) => {
+  if(req.body.dayConfirm){
+    db.order.update( {status: req.body.type, dayConfirm: req.body.dayConfirm}, {
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(function(order) {
+      result(null, order);
+      }).catch((err)=>{
+        console.log("error: ", err);
+        result(null, err);
+        return;
+    });}
+  else{
+    db.order.update( {status: req.body.type, dayReceipt: req.body.dayReceipt}, {
+      where: {
+        id: req.body.id
+      }
+    })
+    .then(function(order) {
+      result(null, order);
+      }).catch((err)=>{
+        console.log("error: ", err);
+        result(null, err);
+        return;
+    });
+  }
 };
 
 
@@ -123,6 +142,34 @@ exports.findByFilter = (req, result) => {
   }
 };
 
+exports.findById = (id, result) => {
+    db.order.findAll({
+      where: {
+        id: id
+      }
+    }).then(function(order) {
+      result(null, order);
+      }).catch((err)=>{
+        console.log("error: ", err);
+        result(null, err);
+        return;
+    });
+};
+
+exports.reviewById = (req, result) => {
+  db.orderdetail.update( {review: 1}, {
+    where: {
+      idOrder: req.body.idOrder,
+      idBook: req.body.idBook
+    }
+  }).then(function(order) {
+    result(null, order);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
 // orderModel.findById = (id, result) => {
 //     sql.query(`SELECT * FROM products WHERE id = ${id}`, (err, res) => {
 //       if (err) {
