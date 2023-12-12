@@ -31,11 +31,26 @@ db.comment.belongsTo(db.user, {
   foreignKey: "idUser",
   as: "user_comment" 
 });
+
 db.user.hasMany(db.comment, {as : 'user_comment', foreignKey : 'idUser'});
+
+db.comment.belongsTo(db.product, {
+  foreignKey: "idBook",
+  as: "product_comment" 
+});
+
+db.product.hasMany(db.comment, {as : 'product_comment', foreignKey : 'id'});
 
 db.address.belongsTo(db.user, {
   foreignKey: "idUser",
   as: "user_address" 
+});
+
+db.address.hasMany(db.order, {as : 'order_address', foreignKey : 'idAddress'});
+
+db.order.belongsTo(db.address, {
+  foreignKey: "idAddress",
+  as: "order_address" 
 });
 
 module.exports = db;

@@ -35,8 +35,26 @@ exports.findById = (id, result) => {
   });
 };
 
+exports.isUnique = (title, result) => {
+  db.product.findOne({
+    where: { title: title.trim()},
+  }).then(function(product) {
+    if(product){
+      result(null, false);
+    }
+    else{
+      result(null, true);
+    }
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
+
 exports.findByFilter = (req, result) => {
   let category = req.body.category ? req.body.category : "";
+  console.log(category)
   let search = req.body.search ? req.body.search : "";
   let min = req.body.min ? req.body.min : 0;
   let max = req.body.max ? req.body.max : 1000000;

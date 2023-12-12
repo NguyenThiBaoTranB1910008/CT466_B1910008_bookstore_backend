@@ -9,6 +9,11 @@ router.route("/")
 
 // router.route("/check/:accname")
 //     .get(user.checkAccName)
+router.route("/statistic")
+    .post(order.statistic)
+
+router.route("/detailstatistic")
+    .post(order.OrderDetailStatistic)
 
 router.route("/confirm")
     .post(order.confirm)

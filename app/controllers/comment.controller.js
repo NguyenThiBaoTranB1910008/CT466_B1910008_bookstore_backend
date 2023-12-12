@@ -38,6 +38,22 @@ exports.findByIdBook = (req, res) => {
   });
 };
 
+exports.findByIdUser = (req, res) => {
+  CommentModel.getCommentByIdUser(req.params.id, (err, data) => {
+  if (err)
+      res.send(false);
+  else res.send(data);
+});
+};
+
+exports.getAll = (req, res) => {
+  CommentModel.getAll(req, (err, data) => {
+  if (err)
+      res.send(false);
+  else res.send(data);
+});
+};
+
 exports.uploadFile = (req, res) => {
   if (!req.files) {
     return res.status(500).send({ msg: "file is not found" })
@@ -76,4 +92,20 @@ exports.uploadFile = (req, res) => {
       }
     })
   }
+};
+
+exports.delete = (req, res) => {
+  CommentModel.remove(req.params.idbook, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found comment with id ${req.params.idbook}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete comment with id " + req.params.idbook
+        });
+      }
+    } else res.send({ message: `Comment item was deleted successfully!` });
+  });
 };

@@ -5,11 +5,8 @@ exports.create = (newOrder, result) => {
   db.order.create(
     {
       idUser: newOrder.idUser,
-      phone: newOrder.phone,
-      lastname: newOrder.lastname, 
-      firstname: newOrder.firstname,
-      address: newOrder.address, 
-      note: newOrder.note, 
+      idAddress: newOrder.idAddress,
+      note: "." ,
       dayOrder: newOrder.dayOrder, 
       dayConfirm: newOrder.dayConfirm,
       dayReceipt: newOrder.dayReceipt,
@@ -48,6 +45,12 @@ exports.getOrderByAcc = (accname, result) => {
     where: { 
       idUser: accname
     },
+    include: [
+      {
+          association: "order_address",
+          attributes: ["name","phone", "city", "district", "ward", "address"]
+      }
+    ]
   }).then(function(order) {
     result(null, order);
     }).catch((err)=>{
@@ -103,7 +106,14 @@ exports.confirm = (req, result) => {
 
 
 exports.getAll = (title, result) => {
-  db.order.findAll().then(function(order) {
+  db.order.findAll({ 
+    include: [
+      {
+          association: "order_address",
+          attributes: ["name","phone", "city", "district", "ward", "address"]
+      }
+    ]}
+  ).then(function(order) {
     result(null, order);
     }).catch((err)=>{
       console.log("error: ", err);
@@ -113,13 +123,20 @@ exports.getAll = (title, result) => {
 };
 
 exports.findByFilter = (req, result) => {
+  console.log(req.body)
   let status = req.body.status ? req.body.status : "";
   if(req.body.id)
     db.order.findAll({
       where: {
-        accname: req.body.id,
+        idUser: req.body.id,
         status:  {[Op.substring] : status},
-      }
+      },
+      include: [
+        {
+            association: "order_address",
+            attributes: ["name","phone", "city", "district", "ward", "address"]
+        }
+      ]
     }).then(function(order) {
       result(null, order);
       }).catch((err)=>{
@@ -131,7 +148,13 @@ exports.findByFilter = (req, result) => {
     db.order.findAll({
       where: {
         status:  {[Op.substring] : status},
-      }
+      },
+      include: [
+        {
+            association: "order_address",
+            attributes: ["name","phone", "city", "district", "ward", "address"]
+        }
+      ]
     }).then(function(order) {
       result(null, order);
       }).catch((err)=>{
@@ -146,7 +169,13 @@ exports.findById = (id, result) => {
     db.order.findAll({
       where: {
         id: id
-      }
+      },
+      include: [
+        {
+            association: "order_address",
+            attributes: ["name","phone", "city", "district", "ward", "address"]
+        }
+      ]
     }).then(function(order) {
       result(null, order);
       }).catch((err)=>{
@@ -161,6 +190,44 @@ exports.reviewById = (req, result) => {
     where: {
       idOrder: req.body.idOrder,
       idBook: req.body.idBook
+    }
+  }).then(function(order) {
+    result(null, order);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
+
+exports.statistic = (dateStart, dateEnd, result) => {
+  db.order.findAll({
+    where: {
+      "dayOrder": {
+        [Op.and]: {
+          [Op.gte]: dateStart,
+          [Op.lte]: dateEnd
+        }
+      }
+    }
+  }).then(function(order) {
+    result(null, order);
+    }).catch((err)=>{
+      console.log("error: ", err);
+      result(null, err);
+      return;
+  });
+};
+
+exports.orderDetailstatistic = (dateStart, dateEnd, result) => {
+  db.orderdetail.findAll({
+    where: {
+      "dayOrder": {
+        [Op.and]: {
+          [Op.gte]: dateStart,
+          [Op.lte]: dateEnd
+        }
+      }
     }
   }).then(function(order) {
     result(null, order);

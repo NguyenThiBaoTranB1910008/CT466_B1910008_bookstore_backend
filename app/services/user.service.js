@@ -118,7 +118,7 @@ exports.remove = (id, result) => {
 exports.update = (id, user, result) => {
   db.user.update( user, {
     where: {
-      id: id
+      idUser: id
     }
   })
   .then(function(user) {

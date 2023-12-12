@@ -9,10 +9,7 @@ exports.create = (req, res) => {
     
     const orderModel = {
       idUser: req.body.idUser,
-      phone: req.body.phone,
-      lastname : req.body.lastname,
-      firstname : req.body.firstname,
-      address : req.body.address,
+      idAddress: parseInt(req.body.idAddress),
       note: req.body.note,
       dayOrder: req.body.dayOrder,
       dayConfirm: "",
@@ -21,8 +18,7 @@ exports.create = (req, res) => {
       total: req.body.total,
       cart: req.body.cart
     };
-  
-    // Save Tutorial in the database
+
     OrderModel.create(orderModel, (err, data) => {
         if (err)
             res.status(500).send({
@@ -54,6 +50,23 @@ exports.findByAcc = (req, res) => {
   });
 };
 
+exports.statistic = (req, res) => {
+  OrderModel.statistic(req.body.dateStart, req.body.dateEnd , (err, data) => {
+  if (err)
+      res.send(false);
+  else res.send(data);
+});
+};
+
+exports.OrderDetailStatistic = (req, res) => {
+  OrderModel.orderDetailstatistic(req.body.dateStart, req.body.dateEnd , (err, data) => {
+  if (err)
+      res.send(false);
+  else res.send(data);
+});
+};
+
+
 exports.findOrderDetail = (req, res) => {
     OrderModel.getOrderDetail(req.params.id, (err, data) => {
     if (err)
@@ -79,6 +92,7 @@ exports.findOrderDetail = (req, res) => {
 };
 
 exports.findByFilter= (req, res) => {
+  console.log(req.body)
   OrderModel.findByFilter(req, (err, data) => {
     if (err)
         res.status(500).send({

@@ -13,6 +13,7 @@ router.route("/filter")
 
 router.route("/new")
         .get(products.getLimit)
+        .post(products.isUnique)
 
 router.route("/upload")
         .post(products.uploadFile)
